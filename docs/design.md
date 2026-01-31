@@ -184,6 +184,42 @@ The architecture supports extension at multiple points:
 4. **Escalation Policies**: Subclass `EscalationPolicy`
 5. **Metrics**: Add new collectors to `MetricsCollector`
 
+## Failure Cases We Intentionally Allow
+
+Not all potential risks should trigger immediate blocking. We intentionally allow certain behaviors to avoid over-triggering safeguards and degrading user experience.
+
+### Allowed: Mild Drift Without Immediate Blocking
+
+**Behavior**: Drift scores below 0.5 are logged but don't trigger escalation.
+
+**Rationale**: Many legitimate conversations naturally evolve from their starting point. A user asking about "trip planning" might reasonably shift to "local safety tips"—this registers as topic drift but isn't harmful.
+
+**Mitigation**: Cumulative drift scoring. If mild drift persists across multiple turns, it eventually triggers review. Single-turn drift alone doesn't.
+
+### Allowed: High-Risk Keywords in Context
+
+**Behavior**: Keywords like "hack" or "vulnerability" don't automatically block when context suggests legitimate use (e.g., "security research", "bug bounty").
+
+**Rationale**: Security professionals need to discuss these topics. Blocking on keywords alone creates false positives for legitimate users.
+
+**Mitigation**: Combined scoring that weighs keywords against stated intent and conversation trajectory.
+
+### Allowed: Single Ambiguous Turn
+
+**Behavior**: A single turn that could be interpreted as either benign or harmful gets a warning, not a block.
+
+**Rationale**: Ambiguity should prompt clarification, not punishment. Users deserve the benefit of the doubt.
+
+**Mitigation**: Soft stop mechanism that requests clarification. If the user clarifies toward harm, *then* escalate.
+
+### The Underlying Philosophy
+
+> We intentionally allow mild drift without immediate blocking to avoid over-triggering safeguards and degrading user experience. This creates a controlled risk window, mitigated by mid-trajectory monitoring and escalation policies.
+
+This reflects Anthropic's framing of harm minimization vs. usability: **the goal is not zero risk, but appropriate risk management that preserves the system's usefulness**.
+
+---
+
 ## Limitations
 
 1. **Keyword-based detection**: Real attacks may use novel language

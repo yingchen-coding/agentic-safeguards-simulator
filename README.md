@@ -211,6 +211,31 @@ Different deployments need different thresholds. Make sensitivity configurable.
 
 ---
 
+## Design Tradeoffs
+
+| Tradeoff | Option A | Option B | Our Choice |
+|----------|----------|----------|------------|
+| **Detection method** | Rule-based patterns | Learned classifier | Rule-based (interpretable, no training data needed) |
+| **Error preference** | Minimize false positives | Minimize false negatives | Lean toward false negatives (preserve usability) |
+| **Blocking timing** | Early blocking (pre-action) | Late blocking (mid-trajectory) | Layered (catch obvious early, subtle later) |
+| **Threshold type** | Static thresholds | Adaptive escalation | Adaptive (context-aware sensitivity) |
+| **User friction** | Block silently | Explain and clarify | Explain (maintain trust, enable correction) |
+
+### Why We Lean Toward False Negatives
+
+Aggressive blocking creates two problems:
+1. **User frustration**: Legitimate tasks get blocked, users lose trust
+2. **Circumvention pressure**: Users learn to phrase requests to avoid triggers
+
+We accept a controlled risk window where mild drift is allowed, mitigated by:
+- Mid-trajectory monitoring that catches escalation patterns
+- Soft stops that request clarification before hard blocks
+- Cumulative drift scoring that triggers on sustained deviation
+
+This reflects a core belief: **usability and safety are not opposing goals**—over-triggering safeguards degrades both.
+
+---
+
 ## Limitations & Future Work
 
 - Current implementation uses simulated LLM responses
