@@ -325,7 +325,45 @@ Together, they form a complete picture: **failure analysis → detection → mit
 ## Contact
 
 Ying Chen, Ph.D.
-blueoceanally@gmail.com
+yingchen.for.upload@gmail.com
+
+---
+
+## Completeness & Limitations
+
+### What This Project Does Well
+- Three-layer safeguard architecture (pre/mid/post)
+- Escalation policies with soft/hard stops
+- Explicit usability vs safety tradeoff framing
+- Configurable sensitivity thresholds
+
+### Known Limitations
+
+**Safeguard Failure Modes Not Fully Modeled**
+- Safeguards themselves can be bypassed or evaded
+- Alert fatigue and over-trigger paralysis not quantified
+- Future work: red-team the safeguards, model failure cascades
+
+**Usability Cost Not Quantified**
+- We claim over-triggering hurts usability but provide no metrics
+- Task success rate and user friction not measured
+- Future work: safety-usability frontier analysis
+
+**Capability Scaling Gap**
+- No guidance on how safeguards evolve as agent capabilities increase
+- Tool-1 to Tool-N progression not documented
+- Future work: safeguard maturity model
+
+**Implementation Realism**
+- Current implementation uses simulated LLM responses
+- Tool implementations are mocked
+- Production deployment requires additional engineering
+
+### Honest Assessment
+This project demonstrates where safeguards should live in agent loops and how to design escalation policies. It does not claim to:
+- Provide production-ready safeguard implementations
+- Quantify the exact usability cost of safety measures
+- Be robust against adversarial safeguard bypass
 
 ---
 
