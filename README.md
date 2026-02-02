@@ -331,39 +331,26 @@ yingchen.for.upload@gmail.com
 
 ## Completeness & Limitations
 
-### What This Project Does Well
-- Three-layer safeguard architecture (pre/mid/post)
-- Escalation policies with soft/hard stops
-- Explicit usability vs safety tradeoff framing
-- Configurable sensitivity thresholds
+This simulator provides a reference architecture for embedding safeguards directly into agent workflows, demonstrating how safety interventions can be applied pre-action, mid-trajectory, and post-action. It is intended to support design exploration rather than to serve as a production-ready safety system.
 
-### Known Limitations
+**What is complete:**
+- A modular agent loop with explicit safeguard hook points (pre-action, mid-trajectory, post-action).
+- Multiple safeguard primitives (intent checks, drift monitoring, output audits) with configurable escalation policies.
+- Telemetry hooks to measure safety outcomes and intervention frequency.
+- Demonstrations of safety-usability tradeoffs under different safeguard configurations.
 
-**Safeguard Failure Modes Not Fully Modeled**
-- Safeguards themselves can be bypassed or evaded
-- Alert fatigue and over-trigger paralysis not quantified
-- Future work: red-team the safeguards, model failure cascades
+**Key limitations:**
+- **Safeguard evasion:** The simulator does not yet comprehensively model adversarial strategies that target safeguards themselves (e.g., gradual evasion, alert fatigue, adversarial calibration).
+- **Usability metrics:** User experience and task success degradation are only partially quantified. Real deployments require explicit modeling of user friction, latency, and false positive recovery.
+- **Capability scaling:** Safeguard strategies are not automatically adapted as agent capabilities or tool access increase. The simulator does not yet provide maturity levels or scaling rules for safeguards across capability tiers.
+- **Production integration:** This is not a hardened production framework. Real systems require authentication, audit trails, access control, and incident response integration.
 
-**Usability Cost Not Quantified**
-- We claim over-triggering hurts usability but provide no metrics
-- Task success rate and user friction not measured
-- Future work: safety-usability frontier analysis
+**Future work:**
+- Red-teaming safeguards directly to surface evasion and alert fatigue failure modes.
+- Formalizing safety-usability frontiers and error budgets.
+- Defining safeguard scaling strategies as agent capabilities expand.
 
-**Capability Scaling Gap**
-- No guidance on how safeguards evolve as agent capabilities increase
-- Tool-1 to Tool-N progression not documented
-- Future work: safeguard maturity model
-
-**Implementation Realism**
-- Current implementation uses simulated LLM responses
-- Tool implementations are mocked
-- Production deployment requires additional engineering
-
-### Honest Assessment
-This project demonstrates where safeguards should live in agent loops and how to design escalation policies. It does not claim to:
-- Provide production-ready safeguard implementations
-- Quantify the exact usability cost of safety measures
-- Be robust against adversarial safeguard bypass
+This project is part of a larger closed-loop safety system. See the portfolio overview for how this component integrates with benchmarks, safeguards, stress tests, release gating, and incident-driven regression.
 
 ---
 
