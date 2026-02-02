@@ -76,6 +76,46 @@ A model that refuses harmful single prompts may still:
 
 ---
 
+## Safeguard Ablations and Cost Profiles
+
+This simulator supports systematic ablations over safeguard placement (pre-action, mid-trajectory, post-action). Reported results include both safety gains and operational costs (latency, token usage) to surface real-world tradeoffs.
+
+## Failure Modes of Safeguards
+
+Safeguards can themselves fail or introduce new failure modes, including escalation loops and cascading false blocks. We explicitly model and test safeguard failure modes to avoid assuming safeguards are always benign.
+
+## Production Feasibility
+
+All safeguard configurations are evaluated under realistic latency budgets. Configurations exceeding operational latency or cost constraints are flagged as non-deployable.
+
+---
+
+## 5-Minute Demo Walkthrough
+
+This demo shows how safeguard placement affects delayed failures and operational cost.
+
+### Step 1: Baseline Agent (No Safeguards)
+```bash
+python demos/run_agent.py --config demos/configs/no_safeguards.yaml
+```
+
+### Step 2: Enable Pre-Action Safeguards
+```bash
+python demos/run_agent.py --config demos/configs/pre_only.yaml
+```
+
+### Step 3: Full Safeguard Stack
+```bash
+python demos/run_agent.py --config demos/configs/pre_mid_post.yaml
+```
+
+Expected outcome:
+- No safeguards leads to delayed policy violations.
+- Pre-action safeguards reduce obvious misuse but miss slow-burn failures.
+- Mid-trajectory monitoring significantly reduces delayed failures with moderate latency increase.
+
+---
+
 ## Usage
 
 ```bash
