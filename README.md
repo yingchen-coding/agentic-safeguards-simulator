@@ -92,27 +92,40 @@ All safeguard configurations are evaluated under realistic latency budgets. Conf
 
 ## 5-Minute Demo Walkthrough
 
-This demo shows how safeguard placement affects delayed failures and operational cost.
+This walkthrough illustrates where safeguards intervene in an agent loop and how layered defenses reduce delayed failures.
 
-### Step 1: Baseline Agent (No Safeguards)
+**Step 1: Run the agent without safeguards**
 ```bash
-python demos/run_agent.py --config demos/configs/no_safeguards.yaml
+python demos/run_agent.py --scenario scenarios/misuse.yaml --safeguards none
 ```
 
-### Step 2: Enable Pre-Action Safeguards
+Observe successful task completion but unsafe tool usage in later steps.
+
+**Step 2: Enable pre-action safeguards only**
+
 ```bash
-python demos/run_agent.py --config demos/configs/pre_only.yaml
+python demos/run_agent.py --scenario scenarios/misuse.yaml --safeguards pre_action
 ```
 
-### Step 3: Full Safeguard Stack
+Note that obvious injections are blocked, but slow-burn attacks still succeed.
+
+**Step 3: Enable full layered safeguards**
+
 ```bash
-python demos/run_agent.py --config demos/configs/pre_mid_post.yaml
+python demos/run_agent.py --scenario scenarios/misuse.yaml --safeguards pre_action,mid_trajectory,post_action
 ```
 
-Expected outcome:
-- No safeguards leads to delayed policy violations.
-- Pre-action safeguards reduce obvious misuse but miss slow-burn failures.
-- Mid-trajectory monitoring significantly reduces delayed failures with moderate latency increase.
+Inspect telemetry logs in `telemetry/run_*.json` to see where interventions trigger.
+
+**Step 4: Explore safety-usability tradeoffs**
+
+```bash
+python demos/sweep_thresholds.py --scenario scenarios/benign.yaml
+```
+
+Review the false positive vs. task success curves.
+
+This demo shows how safeguards must be embedded across the agent lifecycle, not only at the model boundary.
 
 ---
 
@@ -351,6 +364,15 @@ This simulator provides a reference architecture for embedding safeguards direct
 - Defining safeguard scaling strategies as agent capabilities expand.
 
 This project is part of a larger closed-loop safety system. See the portfolio overview for how this component integrates with benchmarks, safeguards, stress tests, release gating, and incident-driven regression.
+
+---
+
+## What This Repo Is NOT
+
+- This is not a drop-in production safeguards framework.
+- This is not a guarantee that layered safeguards fully eliminate misuse or misalignment.
+- This is not an optimal safeguard configuration; it provides design patterns and tradeoff surfaces.
+- This simulator does not replace organizational processes such as human review and incident response.
 
 ---
 
