@@ -132,6 +132,52 @@ A model that refuses harmful single prompts may still:
 
 ---
 
+## Chaos Safety Engineering
+
+> **If safeguards fail partially, do we degrade safely?**
+
+This is the SRE principle of chaos engineering applied to AI safety. We inject failures into safeguard components to verify graceful degradation.
+
+### Chaos Experiments
+
+| Experiment | Question Answered |
+|------------|-------------------|
+| `drop_safeguard` | What if pre/mid/post action guard fails completely? |
+| `delay_alerting` | What if alerts are delayed or dropped? |
+| `corrupt_metrics` | What if metric values are corrupted or missing? |
+
+### Usage
+
+```python
+from chaos import ChaosEngine, DropSafeguardChaos, DelayAlertingChaos
+
+engine = ChaosEngine()
+engine.register(DropSafeguardChaos())
+engine.register(DelayAlertingChaos())
+
+results = engine.run_all(safeguard_pipeline, test_scenarios)
+
+summary = engine.get_summary(results)
+# {
+#   "status": "WARN",
+#   "catastrophic_failure": 0,
+#   "partial_degradation": 1,
+#   "critical_issues": [...]
+# }
+```
+
+### Why This Matters
+
+Safeguards are themselves software that can fail. Key questions:
+
+1. **Single points of failure**: If mid-trajectory monitor dies, do attacks pass?
+2. **Fail-open vs fail-closed**: On error, do we block or allow?
+3. **Alert reliability**: If alerts drop, do we notice?
+
+See [`chaos/`](chaos/) for implementation.
+
+---
+
 ## Safeguard Ablations and Cost Profiles
 
 This simulator supports systematic ablations over safeguard placement (pre-action, mid-trajectory, post-action). Reported results include both safety gains and operational costs (latency, token usage) to surface real-world tradeoffs.
