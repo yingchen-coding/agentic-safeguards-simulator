@@ -213,6 +213,8 @@ agentic-safeguards-simulator/
 │   └── escalation.py        # Escalation policies
 ├── analysis/
 │   └── failure_mining.py    # Discovers recurring bypass patterns
+├── config/
+│   └── policy_dsl.yaml      # Declarative safeguard policy configuration
 ├── telemetry/
 │   ├── logger.py            # Event logging
 │   └── metrics.py           # Safety metrics
