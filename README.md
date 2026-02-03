@@ -211,6 +211,8 @@ agentic-safeguards-simulator/
 │   ├── trajectory_monitor.py # Mid-trajectory monitoring
 │   ├── post_action.py       # Post-action audit
 │   └── escalation.py        # Escalation policies
+├── analysis/
+│   └── failure_mining.py    # Discovers recurring bypass patterns
 ├── telemetry/
 │   ├── logger.py            # Event logging
 │   └── metrics.py           # Safety metrics
