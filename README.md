@@ -35,6 +35,8 @@ This repo **explicitly does NOT**:
 
 > **Rule of thumb**: If the question is "should we ship this model?", this repo must not answer it.
 
+> **Boundary Statement**: This repository simulates safeguard placement and escalation logic. It **does NOT define final safety policy thresholds** or approve production deployment. Safeguards produce signals, not decisions. Final authority lives in [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite).
+
 ---
 
 ## Design Principles
