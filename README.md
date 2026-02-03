@@ -2,7 +2,63 @@
 
 # Agentic Safeguards Simulator
 
-> A minimal agentic system simulator with built-in safeguards hooks, telemetry, and escalation policies.
+> **Mission**: Implement agentic safeguard mechanisms and failure analysis for multi-step LLM agents.
+> The canonical place where safety policies are encoded, enforced, and stress-analyzed **at the mechanism level**.
+
+---
+
+## Boundary Declaration (What This Repo Owns)
+
+This repo is **responsible for**:
+
+- Implementing safeguard mechanisms (pre-action filters, trajectory monitoring, post-action validation)
+- Defining policy logic and enforcement hooks (`config/policy_dsl.yaml`, safeguard decision rules)
+- Analyzing safeguard failure modes (bypass pattern mining, failure clustering)
+- Producing artifacts about safeguard weaknesses (bypass patterns, failure traces, guardrail blind spots)
+
+This repo is the **single source of truth** for:
+
+> "How safeguards are implemented and where they fail."
+
+---
+
+## Explicit Non-Responsibilities (Hard Boundaries)
+
+This repo **explicitly does NOT**:
+
+- ❌ Define attack taxonomies or evaluation benchmarks → [agentic-misuse-benchmark](https://github.com/yingchen-coding/agentic-misuse-benchmark)
+- ❌ Perform large-scale stress testing or fuzzing → [safeguards-stress-tests](https://github.com/yingchen-coding/safeguards-stress-tests)
+- ❌ Orchestrate production evaluation pipelines → [scalable-safeguards-eval-pipeline](https://github.com/yingchen-coding/scalable-safeguards-eval-pipeline)
+- ❌ Decide release readiness (OK / WARN / BLOCK) → [model-safety-regression-suite](https://github.com/yingchen-coding/model-safety-regression-suite)
+- ❌ Perform post-deployment incident RCA or blast-radius analysis → [agentic-safety-incident-lab](https://github.com/yingchen-coding/agentic-safety-incident-lab)
+- ❌ Act as an integration or demo entrypoint → [agentic-safety-demo](https://github.com/yingchen-coding/agentic-safety-demo)
+
+> **Rule of thumb**: If the question is "should we ship this model?", this repo must not answer it.
+
+---
+
+## Design Principles
+
+1. **Mechanism, not orchestration** — Focus on *how safeguards work*, not *when or where they are executed in production*
+2. **Composable hooks over monoliths** — Safeguards are modular hooks (pre / trajectory / post) importable into other systems
+3. **Failure-first analysis** — Every safeguard ships with known bypass patterns, expected failure modes, adversarial assumptions
+4. **No release authority** — Safeguards produce *signals*, not *decisions*. Release gating is handled downstream
+5. **Deterministic, inspectable logic** — Policies and enforcement rules are declarative, auditable, replayable
+
+---
+
+## Interface Contracts
+
+**Inputs:**
+- Causal mechanisms from [when-rlhf-fails-quietly](https://github.com/yingchen-coding/when-rlhf-fails-quietly)
+- Attack patterns from [agentic-misuse-benchmark](https://github.com/yingchen-coding/agentic-misuse-benchmark)
+
+**Outputs:**
+- Safeguard hooks (importable modules)
+- Failure patterns / bypass cases
+- Structured failure traces for: stress-tests, incident-lab, regression-suite
+
+---
 
 ## Motivation
 
